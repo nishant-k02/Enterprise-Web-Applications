@@ -24,56 +24,33 @@ public class AccessoryList extends HttpServlet {
 
 		String CategoryName = request.getParameter("maker");
 //		String ConsoleName = request.getParameter("console");
-
-		HashMap<String,Accessory> allaccessories = new HashMap<String,Accessory> ();
-        HashMap<String,Console> allconsoles = new HashMap<String,Console> ();
-
-
-		/* Checks the Tablets type whether it is microsft or sony or nintendo */
-		try{
-		    allconsoles = MySqlDataStoreUtilities.getConsoles();
-		}
-		catch(Exception e)
-		{
-			
-		} 
-
-		/* Checks the Tablets type whether it is microsft or sony or nintendo */
-		try{
-		     allaccessories = MySqlDataStoreUtilities.getAccessories();
-		}
-		catch(Exception e)
-		{
-			
-		}
 		HashMap<String, Console> hm = new HashMap<String, Console>();
-			if(CategoryName.equals("blink"))
+			if(CategoryName.equals("microsoft"))
 			{
-				for(Map.Entry<String,Console> entry : allconsoles.entrySet())
+				for(Map.Entry<String,Console> entry : SaxParserDataStore.consoles.entrySet())
 				{	
-					if(entry.getValue().getRetailer().equals("Blink"))
+					if(entry.getValue().getRetailer().equals("Microsoft"))
 					{
 					 hm.put(entry.getValue().getId(),entry.getValue());
-					 
 					}
 				}
 				
 			}
-			else if(CategoryName.equals("eufy"))
+			else if(CategoryName.equals("sony"))
 			{	
-				for(Map.Entry<String,Console> entry : allconsoles.entrySet())
+				for(Map.Entry<String,Console> entry : SaxParserDataStore.consoles.entrySet())
 				{	
-				  if(entry.getValue().getRetailer().equals("Eufy"))
+				  if(entry.getValue().getRetailer().equals("Sony"))
 				 { 
 					hm.put(entry.getValue().getId(),entry.getValue());
 				 }
 				}
 			}
-			else if(CategoryName.equals("ring"))
+			else if(CategoryName.equals("nintendo"))
 			{
-				for(Map.Entry<String,Console> entry : allconsoles.entrySet())
+				for(Map.Entry<String,Console> entry : SaxParserDataStore.consoles.entrySet())
 				{
-				  if(entry.getValue().getRetailer().equals("Ring"))
+				  if(entry.getValue().getRetailer().equals("Nintendo"))
 				 {
 					 hm.put(entry.getValue().getId(),entry.getValue());
 				 }
@@ -93,20 +70,18 @@ public class AccessoryList extends HttpServlet {
 		utility.printHtml("Header.html");
 		utility.printHtml("LeftNavigationBar.html");
 		pw.print("<div id='content'><div class='post'><h2 class='title meta'>");
-		pw.print("<a style='font-size: 24px;'>"+ CategoryName +": Accessories</a>");
+		pw.print("<a style='font-size: 24px;'>"+ " Smart Lightings</a>");
 		pw.print("</h2><div class='entry'><table id='bestseller'>");
 		int i = 1; int size= 2;
 		for(Map.Entry<String, Console> entry : hm.entrySet())
 		{
 			Console console = entry.getValue();
-			
-			
 			for(Map.Entry<String, String> acc:console.getAccessories().entrySet())
 			{
 		        
-				Accessory accessory= allaccessories.get(acc.getValue());
+				Accessory accessory= SaxParserDataStore.accessories.get(acc.getValue());
 				if(i%2==1) pw.print("<tr>");
-				
+				System.out.print(size);
 				pw.print("<td><div id='shop_item'>");
 				pw.print("<h3>"+accessory.getName()+"</h3>");
 				pw.print("<strong>"+accessory.getPrice()+"$</strong><ul>");
@@ -117,13 +92,12 @@ public class AccessoryList extends HttpServlet {
 						"<input type='hidden' name='maker' value='"+CategoryName+"'>"+
 						"<input type='hidden' name='access' value='"+console.getName()+"'>"+
 						"<input type='submit' class='btnbuy' value='Buy Now'></form></li>");
-				pw.print("<li><form method='post' action='WriteReview'>"+"<input type='hidden' name='name' value='"+accessory.getName()+"'>"+
+				pw.print("<li><form method='post' action='WriteReview'>"+"<input type='hidden' name='name' value='"+acc+"'>"+
 						"<input type='hidden' name='type' value='accessories'>"+
 						"<input type='hidden' name='maker' value='"+CategoryName+"'>"+
 						"<input type='hidden' name='access' value='"+console.getName()+"'>"+
-						"<input type='hidden' name='price' value='"+accessory.getPrice()+"'>"+
 						"<input type='submit' value='WriteReview' class='btnreview'></form></li>");
-				pw.print("<li><form method='post' action='ViewReview'>"+"<input type='hidden' name='name' value='"+accessory.getName()+"'>"+
+				pw.print("<li><form method='post' action='ViewReview'>"+"<input type='hidden' name='name' value='"+acc+"'>"+
 						"<input type='hidden' name='type' value='accessories'>"+
 						"<input type='hidden' name='maker' value='"+CategoryName+"'>"+
 						"<input type='hidden' name='access' value='"+console.getName()+"'>"+

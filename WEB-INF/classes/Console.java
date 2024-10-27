@@ -1,5 +1,5 @@
 import java.util.*;
-import java.util.Map;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -27,14 +27,17 @@ public class Console extends HttpServlet{
 	private String retailer;
 	private String condition;
 	private double discount;
+	private String description;
+
 	HashMap<String,String> accessories;
-	public Console(String name, double price, String image, String retailer,String condition,double discount){
+	public Console(String name, double price, String image, String retailer,String condition,double discount, String description){
 		this.name=name;
 		this.price=price;
 		this.image=image;
 		this.retailer = retailer;
 		this.condition=condition;
 		this.discount = discount;
+		this.description = description;
         this.accessories=new HashMap<String,String>();
 	}
 	
@@ -94,6 +97,13 @@ public class Console extends HttpServlet{
 
 	public void setDiscount(double discount) {
 		this.discount = discount;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	
 }

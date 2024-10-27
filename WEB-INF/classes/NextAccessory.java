@@ -34,38 +34,38 @@ public class NextAccessory extends HttpServlet {
 		}
 		else
 		{
-		   if(CategoryName.equals("blink"))
+		   if(CategoryName.equals("microsoft"))
 		   {
 			 for(Map.Entry<String,Console> entry : SaxParserDataStore.consoles.entrySet())
 			 {
-				if(entry.getValue().getRetailer().equals("Blink"))
+				if(entry.getValue().getRetailer().equals("Microsoft"))
 				 {
 					 hm.put(entry.getValue().getId(),entry.getValue());
 				 }
 			 }
-				name = "Blink";
+				name = "Microsoft";
 		   }
-		   else if(CategoryName.equals("eufy"))
+		   else if(CategoryName.equals("sony"))
 		    {
 			for(Map.Entry<String,Console> entry : SaxParserDataStore.consoles.entrySet())
 				{
-				 if(entry.getValue().getRetailer().equals("Eufy"))
+				 if(entry.getValue().getRetailer().equals("Sony"))
 				 {
 					 hm.put(entry.getValue().getId(),entry.getValue());
 				 }
 				}
-				 name = "Eufy";
+				 name = "Sony";
 			}
-			else if(CategoryName.equals("ring"))
+			else if(CategoryName.equals("nintendo"))
 			{
 				for(Map.Entry<String,Console> entry : SaxParserDataStore.consoles.entrySet())
 				{
-				 if(entry.getValue().getRetailer().equals("Ring"))
+				 if(entry.getValue().getRetailer().equals("Nintendo"))
 				 {
 					 hm.put(entry.getValue().getId(),entry.getValue());
 				 }
 				}
-			   	 name = "Ring";
+			   	 name = "Nintendo";
 			}
 		}
 		
@@ -119,7 +119,7 @@ public class NextAccessory extends HttpServlet {
 		pw.print("<a style='font-size: 24px;'>"+ProductName+" Accessories</a>");
 		pw.print("</h2><div class='entry'><table id='bestseller'>");
 		Console console1 = hm.get(ProductName);
-		
+		System.out.print(ProductName);
 		int i = 1; int size= hm.size();
 		pw.print("<tr>");
 		ArrayList<String> arr = new ArrayList<String> ();
@@ -129,7 +129,7 @@ public class NextAccessory extends HttpServlet {
 			arr.add(acc.getValue());
 		}	
 		
-		
+		System.out.println("vishal");
 		pw.print("<td><li><form method='post' action='PrevAccessory'>" +
 					"<input type='hidden' name='name' value='"+arr+"'>"+
 					"<input type='hidden' name='value' value='"+j+"'>"+

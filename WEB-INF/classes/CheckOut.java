@@ -1,7 +1,5 @@
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -28,10 +26,6 @@ public class CheckOut extends HttpServlet {
 	protected void storeOrders(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	    try
         {
-
-		HashMap<String,Store> allstores = new HashMap<String,Store> ();
-		allstores = MySqlDataStoreUtilities.getStoreLocations();
-
         response.setContentType("text/html");
 		PrintWriter pw = response.getWriter();
         Utilities utility = new Utilities(request,pw);
@@ -71,98 +65,98 @@ public class CheckOut extends HttpServlet {
         pw.print("Total Order Cost</td><td>"+orderTotal);
 		pw.print("<input type='hidden' name='orderTotal' value='"+orderTotal+"'>");
 		pw.print("</td></tr></table><table><tr></tr><tr></tr>");	
-		pw.print("<tr><td>");
+		pw.print("<form name='Cart' action='OrderServlet' method='post'>");
 
-     	pw.print("Customer Name</td>");
-		pw.print("<td><input type='text' name='fullname'>");
-		pw.print("</td></tr>");
-		pw.print("<tr><td>");
+pw.print("<table>");
+pw.print("<tr><th>Total Amount</th><td>$ " + orderTotal + "</td></tr>");
+pw.print("<input type='hidden' name='orderTotal' value='" + orderTotal + "'>");
+pw.print("</table><br>");
 
-		pw.print("<tr><td>");
-	    pw.print("Customer Address Line1</td>");
-		pw.print("<td><input type='text' name='userAddress'>");
-        pw.print("</td></tr>");
+pw.print("<h3>Shipping Details</h3><br>");
+pw.print("<table>");
 
-		pw.print("<tr><td>");
-	    pw.print("Customer Address Line2</td>");
-		pw.print("<td><input type='text' name='userAddressline2'>");
-        pw.print("</td></tr>");
+pw.print("<tr>");
+pw.print("<th>Shipping Mode</th>");
+pw.print("<td><input type='radio' id='delivery' name='mode' value='delivery' required onclick='toggleShippingDetails(true)' style='margin-left: 1rem;'> <label for='delivery'>Delivery</label><br></td>");
+pw.print("<td><input type='radio' id='pickup' name='mode' value='pickup' onclick='toggleShippingDetails(false)'> <label for='pickup'>Pickup</label><br></td>");
+pw.print("</tr>");
 
-		pw.print("<tr><td>");
-	    pw.print("City</td>");
-		pw.print("<td><input type='text' name='city'>");
-        pw.print("</td></tr>");
-
-		pw.print("<tr><td>");
-	    pw.print("State</td>");
-		pw.print("<td><input type='text' name='state'>");
-        pw.print("</td></tr>");
-
-		pw.print("<tr><td>");
-	    pw.print("Zip</td>");
-		pw.print("<td><input type='text' name='zip'>");
-        pw.print("</td></tr>");
-
-		pw.print("<tr><td>");
-     	pw.print("Credit/accountNo</td>");
-		pw.print("<td><input type='text' name='creditCardNo'>");
-		pw.print("</td></tr>");
-
-		pw.print("<tr><td>");
-     	pw.print("Delivery</td>");
-		pw.print("<td><input type='radio' name='delivery' id='homedelivery'><label for='homedelivery'>Home Delivery</label></td>");
-		pw.print("<td><input type='radio' name='delivery' id='storepickup'><label for='storepickup'>Store Pickup</label>");
-		pw.print("</td></tr>");
+pw.print("<tr>");
+pw.print("<th>Street Address</th>");
 
 
-		pw.print("<tr><td>");
-     	pw.print("<label for='pickupaddress'>Store Pickup Address:</label></td>");
-		pw.print("<td><select name='pickupaddress' id='pickupaddress'>");
-		pw.print("<option value='address0'> </option>");
-		int i = 1;
-		for(Map.Entry<String,Store> entry : allstores.entrySet()){
-			String name = entry.getValue().getName();
-			String street = entry.getValue().getStreet();
-			String city = entry.getValue().getCity();
-			String state = entry.getValue().getState();
-			String zip = entry.getValue().getZip();
-			String storeFullAddress = name+", "+street+", "+city+", "+state+", "+zip;
-			pw.print("<p>"+name+"</p>");
-			pw.print("<p>"+street+"</p>");
-			pw.print("<p>"+city+"</p>");
-			pw.print("<p>"+state+"</p>");
-			pw.print("<p>"+zip+"</p>");
-			pw.print("<option value='"+storeFullAddress+"'>"+storeFullAddress+"</option>");
-			i++;
-		}
-		// pw.print("<option value='address1'>60612</option>");
-		// pw.print("<option value='address2'>60667</option>");
-		// pw.print("<option value='address3'>60678</option>");
-		// pw.print("<option value='address4'>60625</option>");
-		// pw.print("<option value='address5'>60634</option>");
-		// pw.print("<option value='address6'>60654</option>");
-		// pw.print("<option value='address7'>60647</option>");
-		// pw.print("<option value='address8'>60603</option>");
-		// pw.print("<option value='address9'>60789</option>");
-		// pw.print("<option value='address10'>60890</option>");
-		pw.print("</td></tr>");
+pw.print("<td><input type='text' id='street' name='street' style='margin-left: 1rem; margin-bottom: 0.5rem;'></td></tr>");
 
-		if(session.getAttribute("usertype").equals("retailer"))
-		{
-		pw.print("<tr><td>");
-	    pw.print("Customer Name</td>");
-		pw.print("<td><input type='text' name='customername'>");
-        pw.print("</td></tr>");
-		}
-		pw.print("<tr><td colspan='2'>");
-		pw.print("<input type='submit' name='submit' class='btnbuy'>");
-        pw.print("</td></tr></table></form>");
-		pw.print("</div></div></div>");		
+pw.print("<tr>");
+pw.print("<th>Apt/Suit</th>");
+pw.print("<td><input type='text' id='apt' name='apt' style='margin-left: 1rem; margin-bottom: 0.5rem;'></td></tr>");
+
+pw.print("<tr>");
+pw.print("<th>City</th>");
+pw.print("<td><input type='text' id='city' name='city' style='margin-left: 1rem; margin-bottom: 0.5rem;'></td></tr>");
+
+pw.print("<tr>");
+pw.print("<th>State</th>");
+pw.print("<td><input type='text' id='state' name='state' style='margin-left: 1rem; margin-bottom: 0.5rem;'></td></tr>");
+
+pw.print("<tr>");
+pw.print("<th>Zip</th>");
+pw.print("<td><input type='text' id='zip' name='zip' style='margin-left: 1rem; margin-bottom: 0.5rem;'></td></tr>");
+
+
+
+pw.print("<tr>");
+pw.print("<td colspan='2'>");
+pw.print("<label>Select Pickup location (if pickup is selected): </label>");
+pw.print("<input name='location' id='location' list='locations'>");
+pw.print("<datalist id='locations'>");
+pw.print("<option value='1555N State Street'/>");
+pw.print("<option value='256N Michigan Avenue'/>");
+pw.print("<option value='400E 25th Street'/>");
+pw.print("<option value='Devon Ave'/>");
+pw.print("<option value='Belmont Harbour'/>");
+pw.print("<option value='525 S Adams'/>");
+pw.print("<option value='256 W Chinatown'/>");
+pw.print("<option value='501 E 32nd St'/>");
+pw.print("<option value='18th St King Drive'/>");
+pw.print("<option value='47th St Wabash'/>");
+pw.print("</datalist>");
+pw.print("</td>");
+pw.print("</tr>");
+
+pw.print("</table>");
+
+pw.print("<h3>Payment Details</h3><br>");
+pw.print("<table>");
+pw.print("<tr>");
+pw.print("<th>Credit/Debit Card</th>");
+pw.print("<td><input type='text' name='creditCardNo' required style='margin-left: 1rem;'> </td></tr>");
+
+pw.print("<tr><td colspan='2'>");
+pw.print("<input type='submit' name='submit' class='btnbuy' value='Place Order' style='width: 100%; margin-top: 1rem;'>");
+pw.print("</td></tr></table>");
+
+pw.print("</form>");
+
+// Include the JavaScript at the bottom of the page
+pw.print("<script>");
+pw.print("function toggleShippingDetails(enable) {");
+pw.print("document.getElementById('street').required = enable;");
+pw.print("document.getElementById('apt').required = enable;");
+pw.print("document.getElementById('city').required = enable;");
+pw.print("document.getElementById('state').required = enable;");
+pw.print("document.getElementById('zip').required = enable;");
+
+// For pickup, ensure the location field is required
+pw.print("document.getElementById('location').required = !enable;");
+pw.print("}");
+pw.print("</script>");
+	
 		utility.printHtml("Footer.html");
 	    }
         catch(Exception e)
 		{
-         
+         System.out.println(e.getMessage());
 		}  			
 		}
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 

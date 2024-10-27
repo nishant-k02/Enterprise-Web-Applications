@@ -24,8 +24,8 @@ public class Game extends HttpServlet{
 	private String condition;
 	private double discount;
 	
-	public Game(String name, double price, String image, String retailer,String condition,double discount){
-	//	this.id=id;
+	public Game(String id,String name, double price, String image, String retailer,String condition,double discount){
+		this.id=id;
 		this.name=name;
 		this.price=price;
 		this.image=image;

@@ -25,12 +25,15 @@ public class Login extends HttpServlet {
 		String password = request.getParameter("password");
 		String usertype = request.getParameter("usertype");
 		HashMap<String, User> hm=new HashMap<String, User>();
+		String TOMCAT_HOME = System.getProperty("catalina.home");
 		//user details are validated using a file 
 		//if the file containts username and passoword user entered user will be directed to home page
 		//else error message will be shown
 		try
-		{	
-			hm=MySqlDataStoreUtilities.selectUser();
+		{		
+          FileInputStream fileInputStream = new FileInputStream(new File(TOMCAT_HOME+"\\webapps\\Tutorial_1\\UserDetails.txt"));
+          ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);	      
+		  hm = (HashMap)objectInputStream.readObject();
 		}
 		catch(Exception e)
 		{
@@ -40,15 +43,13 @@ public class Login extends HttpServlet {
 		if(user!=null)
 		{
 		 String user_password = user.getPassword();
-		 if (password.equals(user_password) && usertype.equals(user.getUsertype())) 
+		 if (password.equals(user_password)) 
 			{
 			HttpSession session = request.getSession(true);
 			session.setAttribute("username", user.getName());
 			session.setAttribute("usertype", user.getUsertype());
-			
 			response.sendRedirect("Home");
 			return;
-			
 			}
 		}
 		displayLogin(request, response, pw, true);
@@ -87,7 +88,7 @@ public class Login extends HttpServlet {
 				+ "</td></tr><tr><td>"
 				+ "<h3>Password</h3></td><td><input type='password' name='password' value='' class='input' required></input>"
 				+ "</td></tr><tr><td>"
-				+ "<h3>User Type</h3></td><td><select name='usertype' class='input'><option value='customer' selected>Customer</option><option value='manager'>Store Manager</option><option value='retailer'>Salesman</option></select>"
+				+ "<h3>User Type</h3></td><td><select name='usertype' class='input'><option value='Customer' selected>Customer</option><option value='Manager'>Store Manager</option><option value='Salesman'>Salesman</option></select>"
 				+ "</td></tr><tr><td></td><td>"
 				+ "<input type='submit' class='btnbuy' value='Login' style='float: right;height: 20px margin: 20px; margin-right: 10px;'></input>"
 				+ "</td></tr><tr><td></td><td>"

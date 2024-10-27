@@ -31,7 +31,7 @@ public class Registration extends HttpServlet {
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 		String repassword = request.getParameter("repassword");
-		String usertype = "customer";
+		String usertype = "Customer";
 		if(!utility.isLoggedin())
 			usertype = request.getParameter("usertype");
 
@@ -43,16 +43,22 @@ public class Registration extends HttpServlet {
 		}
 		else
 		{
-
-			//get the userdata from sql database to hashmap
 			HashMap<String, User> hm=new HashMap<String, User>();
-			
-			String message=MySqlDataStoreUtilities.getConnection();
-			
-			if(message.equals("Successfull"))
+			String TOMCAT_HOME = System.getProperty("catalina.home");
+
+			//get the user details from file 
+
+			try
 			{
-				hm=MySqlDataStoreUtilities.selectUser();
-			
+ 			 FileInputStream fileInputStream = new FileInputStream(new File(TOMCAT_HOME+"\\webapps\\Tutorial_1\\UserDetails.txt"));
+			 ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);	      
+			 hm= (HashMap)objectInputStream.readObject();
+			}
+			catch(Exception e)
+			{
+				
+			}
+
 			// if the user already exist show error that already exist
 
 			if(hm.containsKey(username))
@@ -64,30 +70,27 @@ public class Registration extends HttpServlet {
 
 				User user = new User(username,password,usertype);
 				hm.put(username, user);
-				MySqlDataStoreUtilities.insertUser(username,password,repassword,usertype);					
+			    FileOutputStream fileOutputStream = new FileOutputStream(TOMCAT_HOME+"\\webapps\\Tutorial_1\\UserDetails.txt");
+        		ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+           	 	objectOutputStream.writeObject(hm);
+				objectOutputStream.flush();
+				objectOutputStream.close();       
+				fileOutputStream.close();
 				HttpSession session = request.getSession(true);				
-				
+				session.setAttribute("login_msg", "Your "+usertype+" account has been created. Please login");
 				if(!utility.isLoggedin()){
-					session.setAttribute("login_msg", "Your "+usertype+" account has been created. Please login");
 					response.sendRedirect("Login"); return;
 				} else {
-					response.sendRedirect("CustomerCreated"); return;
+					response.sendRedirect("Account"); return;
 				}
 			}
-		
-		  
+		}
+
 		//display the error message
-		/*if(utility.isLoggedin()){
+		if(utility.isLoggedin()){
 			HttpSession session = request.getSession(true);				
 			session.setAttribute("login_msg", error_msg);
 			response.sendRedirect("Account"); return;
-		
-		  }*/
-		}
-		else 
-		{
-			error_msg="MySql server is not up and running";
-		}
 		}
 		displayRegistration(request, response, pw, true);
 		
@@ -114,7 +117,7 @@ public class Registration extends HttpServlet {
 				+ "</td></tr><tr><td>"
 				+ "<h3>Re-Password</h3></td><td><input type='password' name='repassword' value='' class='input' required></input>"
 				+ "</td></tr><tr><td>"
-				+ "<h3>User Type</h3></td><td><select name='usertype' class='input'><option value='customer' selected>Customer</option><option value='manager'>Store Manager</option><option value='retailer'>Salesman</option></select>"
+				+ "<h3>User Type</h3></td><td><select name='usertype' class='input'><option value='customer' selected>Customer</option><option value='retailer'>Store Manager</option><option value='manager'>Salesman</option></select>"
 				+ "</td></tr></table>"
 				+ "<input type='submit' class='btnbuy' name='ByUser' value='Create User' style='float: right;height: 20px margin: 20px; margin-right: 10px;'></input>"
 				+ "</form>" + "</div></div></div>");

@@ -30,14 +30,8 @@ public class Carousel{
 		String name = null;
 		String CategoryName = null;
 		if(CategoryName==null){
-			try{
-			hm=MySqlDataStoreUtilities.getConsoles();
+			hm.putAll(SaxParserDataStore.consoles);
 			name = "";
-			}catch(Exception e)
-			{
-				
-			}
-			
 		}
 		int l =0;
 		for (OrderItem oi : utility.getCustomerOrders())
@@ -67,13 +61,13 @@ public class Carousel{
 				sb.append("<div class='carousel-inner'>");
 						
 				Console console1 = hm.get(oi.getName());
-			
+				System.out.print(oi.getName());
 				int k = 0; int size= hm.size();
 			
 				for(Map.Entry<String, String> acc:console1.getAccessories().entrySet())
 				{
 				
-					Accessory accessory= MySqlDataStoreUtilities.getAccessories().get(acc.getValue());
+					Accessory accessory= SaxParserDataStore.accessories.get(acc.getValue());
 					if (k==0 )
 					{
 						
@@ -93,13 +87,12 @@ public class Carousel{
 							"<input type='hidden' name='maker' value='"+CategoryName+"'>"+
 							"<input type='hidden' name='access' value='"+oi.getName()+"'>"+
 							"<input type='submit' class='btnbuy' value='Buy Now'></form></li>");
-					sb.append("<li><form method='post' action='WriteReview'>"+"<input type='hidden' name='name' value='"+accessory.getName()+"'>"+
+					sb.append("<li><form method='post' action='WriteReview'>"+"<input type='hidden' name='name' value='"+acc+"'>"+
 							"<input type='hidden' name='type' value='accessories'>"+
-							"<input type='hidden' name='maker' value='"+accessory.getRetailer()+"'>"+
+							"<input type='hidden' name='maker' value='"+CategoryName+"'>"+
 							"<input type='hidden' name='access' value='"+oi.getName()+"'>"+
-							"<input type='hidden' name='price' value='"+accessory.getPrice()+"'>"+
 							"<input type='submit' value='WriteReview' class='btnreview'></form></li>");
-					sb.append("<li><form method='post' action='ViewReview'>"+"<input type='hidden' name='name' value='"+accessory.getName()+"'>"+
+					sb.append("<li><form method='post' action='ViewReview'>"+"<input type='hidden' name='name' value='"+acc+"'>"+
 							"<input type='hidden' name='type' value='accessories'>"+
 							"<input type='hidden' name='maker' value='"+CategoryName+"'>"+
 							"<input type='hidden' name='access' value='"+oi.getName()+"'>"+
