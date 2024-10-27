@@ -24,18 +24,14 @@ public class Tablet extends HttpServlet{
 	private String retailer;
 	private String condition;
 	private double discount;
-	private String productOnSale;
-	private int productQuantity;
 	
-	public Tablet(String name, double price, String image, String retailer, String condition,double discount,String productOnSale,int productQuantity){
+	public Tablet(String name, double price, String image, String retailer, String condition,double discount){
 		this.name=name;
 		this.price=price;
 		this.image=image;
 		this.condition=condition;
 		this.discount = discount;
 		this.retailer = retailer;
-		this.productOnSale = productOnSale;
-		this.productQuantity = productQuantity;
 	}
 	
 	public Tablet(){
@@ -88,19 +84,5 @@ public class Tablet extends HttpServlet{
 
 	public void setDiscount(double discount) {
 		this.discount = discount;
-	}
-	public String getproductOnSale() {
-		return productOnSale;
-	}
-
-	public void setproductOnSale(String productOnSale) {
-		this.productOnSale = productOnSale;
-	}
-
-	public int getproductQuantity() {
-		return productQuantity;
-	}
-	public void setproductQuantity(int productQuantity) {
-		this.productQuantity = productQuantity;
 	}
 }

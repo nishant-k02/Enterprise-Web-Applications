@@ -20,43 +20,17 @@ response.setContentType("text/html");
  pw.println("<html>");
  pw.println("<body>");
 
-		
-
 		Utilities utility = new Utilities(request,pw);
 		utility.printHtml("Header.html");
 		utility.printHtml("LeftNavigationBar.html");
-		//System.out.println("Before product data");
 		pw.print("<div id='content'><div class='post'><h2 class='title meta'>");
 		pw.print("</h2><div class='entry'><table id='bestseller'>");
 		pw.print("<tr>");
 		pw.print("<td><div id='shop_item'>");
 			Product data= (Product)request.getAttribute("data");
-
-			String productType = data.getType();
-		if(productType.equalsIgnoreCase("doorbells")){
-			productType = "consoles";
-			System.out.println("consoles test");
-		}
-		else if(productType.equalsIgnoreCase("doorlocks")){
-			productType = "games";
-		}
-		else if(productType.equalsIgnoreCase("speakers")){
-			productType = "tablets";
-		}
-		else if(productType.equalsIgnoreCase("lights")){
-			productType = "lightnings";
-		}
-		else if(productType.equalsIgnoreCase("thermos")){
-			productType = "thermostats";
-		}
-		else{
-			productType = "accessories";
-		}
-
 			pw.print("<h3>"+data.getName()+"</h3>");
 			pw.print("<strong>$"+data.getPrice()+"</strong><ul>");
-			pw.print("<li id='item'><img src='images/"+productType+"/"+data.getImage()+"' alt='' /></li>");
-			//System.out.println("type"+data.getType());
+			pw.print("<li id='item'><img src='images/"+data.getType()+"/"+data.getImage()+"' alt='' /></li>");
 			pw.print("<li><form method='post' action='Cart'>" +
 					"<input type='hidden' name='name' value='"+data.getId()+"'>"+
 					"<input type='hidden' name='type' value='"+data.getType()+"'>"+

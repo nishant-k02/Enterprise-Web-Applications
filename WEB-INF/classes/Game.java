@@ -23,19 +23,15 @@ public class Game extends HttpServlet{
 	private String retailer;
 	private String condition;
 	private double discount;
-	private String productOnSale;
-	private int productQuantity;
 	
-	public Game(String name, double price, String image, String retailer,String condition,double discount,String productOnSale,int productQuantity){
-	//	this.id=id;
+	public Game(String id,String name, double price, String image, String retailer,String condition,double discount){
+		this.id=id;
 		this.name=name;
 		this.price=price;
 		this.image=image;
 		this.condition=condition;
 		this.discount = discount;
 		this.retailer = retailer;
-		this.productOnSale = productOnSale;
-		this.productQuantity = productQuantity;
 	}
 	
 	public Game(){
@@ -88,20 +84,6 @@ public class Game extends HttpServlet{
 
 	public void setDiscount(double discount) {
 		this.discount = discount;
-	}
-	public String getproductOnSale() {
-		return productOnSale;
-	}
-
-	public void setproductOnSale(String productOnSale) {
-		this.productOnSale = productOnSale;
-	}
-
-	public int getproductQuantity() {
-		return productQuantity;
-	}
-	public void setproductQuantity(int productQuantity) {
-		this.productQuantity = productQuantity;
 	}
 	
 }

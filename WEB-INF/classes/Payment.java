@@ -7,13 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Random;
-import java.util.HashMap;
-import java.util.Map;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 
 @WebServlet("/Payment")
 
@@ -23,104 +16,71 @@ public class Payment extends HttpServlet {
 		
 		response.setContentType("text/html");
 		PrintWriter pw = response.getWriter();
-		String msg = "good";
-		String Customername= "";
-		HttpSession session = request.getSession(true);
+		
 
 		Utilities utility = new Utilities(request, pw);
 		if(!utility.isLoggedin())
 		{
-			session = request.getSession(true);				
+			HttpSession session = request.getSession(true);				
 			session.setAttribute("login_msg", "Please Login to Pay");
 			response.sendRedirect("Login");
 			return;
 		}
 		// get the payment details like credit card no address processed from cart servlet	
 
-		String userAddressLine1=request.getParameter("userAddress");
-		String userAddressLine2=request.getParameter("userAddressline2");
-		String userAddress=userAddressLine1+","+userAddressLine2;
+		String street = request.getParameter("street");
+		String apt = request.getParameter("apt");
+		String city = request.getParameter("city");
+		String state = request.getParameter("state");
+		String zip = request.getParameter("zip");
+		String userAddress = street + ", " + apt + ", " + city + ", " + state + ", " + zip;
 		String creditCardNo=request.getParameter("creditCardNo");
-		String storeFullAddress=request.getParameter("pickupaddress");
-		String result[]=storeFullAddress.split(",");
-		String storeId=result[0];
-		String customername = request.getParameter("fullname");
-
-		Date date = new Date();
-      	SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yy");
-       	String currentDate = formatter.format(date);
-		Calendar c = Calendar.getInstance();
-        c.setTime(date);
-		c.add(Calendar.DATE, 20);
-		Date delivery = c.getTime();
-		String deliveryDate = formatter.format(delivery);
-		c.setTime(date);
-		c.add(Calendar.DATE, 5);
-		Date cancel = c.getTime();
-		String cancelDate = formatter.format(cancel);
-		if(session.getAttribute("usertype").equals("retailer")){
-			Customername =request.getParameter("customername");
-			try{
-				HashMap<String,User> hm=new HashMap<String,User>();
-				hm=MySqlDataStoreUtilities.selectUser();
-				if(hm.containsKey(Customername)){
-					if(hm.get(Customername).getUsertype().equals("customer")){
-						msg ="good";
-					}else {msg ="bad";}
-						
-				}else {msg ="bad";}
-				
-			}catch(Exception e)
-			{
-				
-			}
-		}
-
-		
-			
-
-		utility.printHtml("Header.html");
-		utility.printHtml("LeftNavigationBar.html");
-		pw.print("<div id='content'><div class='post'><h2 class='title meta'>");
-		pw.print("<a style='font-size: 24px;'>Order</a>");
-		pw.print("</h2><div class='entry'>");
-
-		String message=MySqlDataStoreUtilities.getConnection();
-		if(message.equals("Successfull"))
+		System.out.print("the user address is" +userAddress);
+		System.out.print(creditCardNo);
+		if(!userAddress.isEmpty() && !creditCardNo.isEmpty() )
 		{
-			if (msg.equals("good"))
+			//Random rand = new Random(); 
+			//int orderId = rand.nextInt(100);
+			int orderId=utility.getOrderPaymentSize()+1;
+
+			//iterate through each order
+
+			for (OrderItem oi : utility.getCustomerOrders())
 			{
-				int orderId=utility.getOrderPaymentSize()+1;
-				//iterate through each order
 
-				for (OrderItem oi : utility.getCustomerOrders())
-				{
+				//set the parameter for each column and execute the prepared statement
 
-					//set the parameter for each column and execute the prepared statement
+				utility.storePayment(orderId,oi.getName(),oi.getPrice(),userAddress,creditCardNo);
+			}
 
-					utility.storePayment(orderId,customername,userAddress,creditCardNo,oi.getName(),oi.getPrice(),storeFullAddress,storeId);
-				
-				}
-
-				//remove the order details from cart after processing
-					
-				OrdersHashMap.orders.remove(utility.username());
-					
-			pw.print("<h2>Hello, "+(customername)+"</h2>");
-			pw.print("<br><h2>Your Order");
-			pw.print("&nbsp&nbsp");  
-			pw.print("has been  placed on "+(currentDate)+"</h2>");
-			pw.print("<br><h2>Your Order No is "+(orderId)+"</h2>");
-			pw.print("<br><h2>Your order will be delivered on "+(deliveryDate)+"</h2>");
-			pw.print("<br><h3>You can cancel your order until "+(cancelDate)+"</h3>");
-			}else {pw.print("<h2>Customer does not exits</h2>");}		
-		}
-		else
-		{pw.print("<h2>My Sql server is not up and running</h2>");
+			//remove the order details from cart after processing
+			
+			OrdersHashMap.orders.remove(utility.username());	
+			utility.printHtml("Header.html");
+			utility.printHtml("LeftNavigationBar.html");
+			pw.print("<div id='content'><div class='post'><h2 class='title meta'>");
+			pw.print("<a style='font-size: 24px;'>Order</a>");
+			pw.print("</h2><div class='entry'>");
 		
-		}
-		pw.print("</div></div></div>");		
-		utility.printHtml("Footer.html");
+			pw.print("<h2>Your Order");
+			pw.print("&nbsp&nbsp");  
+			pw.print("is stored ");
+			pw.print("<br>Your Order No is "+(orderId));
+			pw.print("<br>Your Order will be delivered by 29th Sept 2024");
+			pw.print("</h2></div></div></div>");		
+			utility.printHtml("Footer.html");
+		}else
+		{
+			utility.printHtml("Header.html");
+			utility.printHtml("LeftNavigationBar.html");
+			pw.print("<div id='content'><div class='post'><h2 class='title meta'>");
+			pw.print("<a style='font-size: 24px;'>Order</a>");
+			pw.print("</h2><div class='entry'>");
+		
+			pw.print("<h4 style='color:red'>Please enter valid address and creditcard number</h4>");
+			pw.print("</h2></div></div></div>");		
+			utility.printHtml("Footer.html");
+		}	
 	}
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

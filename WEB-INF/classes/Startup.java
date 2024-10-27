@@ -13,12 +13,7 @@ public class Startup extends HttpServlet
 
 	public void init() throws ServletException
     {
-		// System.out.println("before hashmap");
 		SaxParserDataStore.addHashmap();
-		//System.out.println("after hashmap");
-		MySqlDataStoreUtilities.Insertproducts();
-		MySqlDataStoreUtilities.Insertstores();
-	
 
     }
 }

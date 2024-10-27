@@ -4,7 +4,7 @@
 body {
 	margin: 0px;
 	padding: 0;
-	background: #0B0B61 !important;
+	background:#0B0B61 !important;
 	font-family: Georgia, "Times New Roman", Times, serif;
 	font-size: 12px;	
 }
@@ -47,7 +47,7 @@ hr {
 	padding: 0px;
 }
 
-/* Smart Homes LOGO Decoration */
+/* Smart Home LOGO Decoration */
 #logo {
 	width: 1000px;
 	height: 110px;
@@ -65,7 +65,7 @@ hr {
 
 }
 
-/* Smart Homes LOGO Decoration with paragraph Tags */
+/* Smart Home LOGO Decoration with paragraph Tags */
 
 #logo p {
 	margin-top: -4px;
@@ -74,15 +74,15 @@ hr {
 
 }
 
-/* Smart Homes LOGO Decoration with Heading Tags */
+/* Smart Home LOGO Decoration with Heading Tags */
 
 #logo h1 {
 	font-size: 48px;
-	margin-bottom: 5px
+	margin-bottom: 5px;
 
 }
 
-/* Smart Homes LOGO Decoration with Hyperlink Tags*/
+/* Smart Home LOGO Decoration with Hyperlink Tags*/
 
 #logo a {
 	text-decoration: none;
@@ -90,7 +90,7 @@ hr {
 
 }
 
-/* Smart Homes LOGO Decoration with Heading and Hyperlink Tags */
+/* Smart Home LOGO Decoration with Heading and Hyperlink Tags */
 
 #logo h1 a {
 	text-decoration: none;
@@ -215,7 +215,7 @@ hr {
 	border: 1px solid #5F817E;
 }
 
-/* Decoration for Different Products in Smart Homes Store. */
+/* Decoration for Different Products in Smart Home Store. */
 
 .post .links {
 	display: block;
@@ -272,7 +272,7 @@ hr {
 	margin-bottom: 20px;
 	padding: 10px 0px 10px 0px;
 	border-radius: 5px;
-	background: #F2D2BD;
+	background: #D7DF01;
 	
 }
 
@@ -351,7 +351,7 @@ hr {
 	color: #000000;
 }
 
-/* Footer Content for Smart Homes */
+/* Footer Content for Smart Home */
 
 #footer {
 	width: 100%;
@@ -459,7 +459,7 @@ hr {
 	padding-bottom: 20px;
 }
 
-/* Buy Now buttons  Decoration for Products in Smart Homes*/
+/* Buy Now buttons  Decoration for Products in Smart Home*/
 
 .btnbuy {
 	-webkit-border-radius: 5;
@@ -477,7 +477,7 @@ hr {
 	margin-right: auto;
 }
 
-/* Review Buttons Decoration for Products in Smart Homes*/
+/* Review Buttons Decoration for Products in Smart Home*/
 
 .btnreview {
 	-webkit-border-radius: 5;

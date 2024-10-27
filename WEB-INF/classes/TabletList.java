@@ -18,17 +18,6 @@ public class TabletList extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/html");
 		PrintWriter pw = response.getWriter();
-		HashMap<String,Tablet> alltablets = new HashMap<String,Tablet> ();
-
-
-		
-		try{
-		     alltablets = MySqlDataStoreUtilities.getTablets();
-		}
-		catch(Exception e)
-		{
-			
-		}
 
 	/* Checks the Tablets type whether it is microsft or apple or samsung */
 
@@ -38,43 +27,43 @@ public class TabletList extends HttpServlet {
 
 		if (CategoryName == null)	
 		{
-			hm.putAll(alltablets);
+			hm.putAll(SaxParserDataStore.tablets);
 			name = "";
 		} 
 		else 
 		{
-			if(CategoryName.equals("alexa")) 
+			if(CategoryName.equals("apple")) 
 			{	
-				for(Map.Entry<String,Tablet> entry : alltablets.entrySet())
+				for(Map.Entry<String,Tablet> entry : SaxParserDataStore.tablets.entrySet())
 				{
-				  if(entry.getValue().getRetailer().equals("Alexa"))
+				  if(entry.getValue().getRetailer().equals("Apple"))
 				  {
 					 hm.put(entry.getValue().getId(),entry.getValue());
 				  }
 				}
-				name ="Alexa";
+				name ="Apple";
 			} 
-			else if (CategoryName.equals("echoDot"))
+			else if (CategoryName.equals("microsoft"))
 			{
-				for(Map.Entry<String,Tablet> entry : alltablets.entrySet())
+				for(Map.Entry<String,Tablet> entry : SaxParserDataStore.tablets.entrySet())
 				{
-				  if(entry.getValue().getRetailer().equals("EchoDot"))
+				  if(entry.getValue().getRetailer().equals("Microsoft"))
 				  {
 					 hm.put(entry.getValue().getId(),entry.getValue());
 				  }
 				}
-				name = "EchoDot";
+				name = "JBL";
 			} 
-			else if (CategoryName.equals("google")) 
+			else if (CategoryName.equals("samsung")) 
 			{
-				for(Map.Entry<String,Tablet> entry : alltablets.entrySet())
+				for(Map.Entry<String,Tablet> entry : SaxParserDataStore.tablets.entrySet())
 				{
-				  if(entry.getValue().getRetailer().equals("Google"))
+				  if(entry.getValue().getRetailer().equals("Samsung"))
 				 {
-					hm.put(entry.getValue().getId(),entry.getValue());
+					 hm.put(entry.getValue().getId(),entry.getValue());
 				 }
 				}	
-				name = "Google";
+				name = "Bose";
 			}
 	    }
 
@@ -88,7 +77,7 @@ public class TabletList extends HttpServlet {
 		utility.printHtml("Header.html");
 		utility.printHtml("LeftNavigationBar.html");
 		pw.print("<div id='content'><div class='post'><h2 class='title meta'>");
-		pw.print("<a style='font-size: 24px;'>" + name + " Speakers</a>");
+		pw.print("<a style='font-size: 24px;'>" + name + " Smart Speakers</a>");
 		pw.print("</h2><div class='entry'><table id='bestseller'>");
 		int i = 1;
 		int size = hm.size();
@@ -99,7 +88,6 @@ public class TabletList extends HttpServlet {
 			pw.print("<td><div id='shop_item'>");
 			pw.print("<h3>" + Tablet.getName() + "</h3>");
 			pw.print("<strong>" + Tablet.getPrice() + "$</strong><ul>");
-			pw.print("<h6> Retailer Discount: <b>"+Tablet.getDiscount()+"</b></h6><ul>");
 			pw.print("<li id='item'><img src='images/tablets/"
 					+ Tablet.getImage() + "' alt='' /></li>");
 			pw.print("<li><form method='post' action='Cart'>" +
@@ -111,9 +99,7 @@ public class TabletList extends HttpServlet {
 			pw.print("<li><form method='post' action='WriteReview'>"+"<input type='hidden' name='name' value='"+entry.getKey()+"'>"+
 					"<input type='hidden' name='type' value='tablets'>"+
 					"<input type='hidden' name='maker' value='"+CategoryName+"'>"+
-					"<input type='hidden' name='price' value='"+Tablet.getPrice()+"'>"+
 					"<input type='hidden' name='access' value=''>"+
-					"<input type='hidden' name='discount' value='"+Tablet.getDiscount()+"'>"+
 				    "<input type='submit' value='WriteReview' class='btnreview'></form></li>");
 			pw.print("<li><form method='post' action='ViewReview'>"+"<input type='hidden' name='name' value='"+entry.getKey()+"'>"+
 					"<input type='hidden' name='type' value='tablets'>"+

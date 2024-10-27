@@ -49,7 +49,18 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response) t
 		//hashmap gets all the order details from file 
 
 		HashMap<Integer, ArrayList<OrderPayment>> orderPayments = new HashMap<Integer, ArrayList<OrderPayment>>();
+		String TOMCAT_HOME = System.getProperty("catalina.home");
 
+		try
+		{
+			FileInputStream fileInputStream = new FileInputStream(new File(TOMCAT_HOME+"\\webapps\\Tutorial_1\\PaymentDetails.txt"));
+			ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);	      
+			orderPayments = (HashMap)objectInputStream.readObject();
+		}
+		catch(Exception e)
+		{
+		}
+		
 
 		/*if order button is clicked that is user provided a order number to view order 
 		order details will be fetched and displayed in  a table 
@@ -57,38 +68,32 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response) t
 
 		if(request.getParameter("Order")!=null && request.getParameter("Order").equals("ViewOrder"))
 		{
-			HttpSession session = request.getSession(true);;
-			if (request.getParameter("orderId") != null && !request.getParameter("orderId").isEmpty() )
-			{
+			if (request.getParameter("orderId") != null && request.getParameter("orderId") != "" )
+			{	
 				int orderId=Integer.parseInt(request.getParameter("orderId"));
 				pw.print("<input type='hidden' name='orderId' value='"+orderId+"'>");
 				//get the order details from file
 				try
 				{
-					orderPayments=MySqlDataStoreUtilities.selectOrder();
-
+					FileInputStream fileInputStream = new FileInputStream(new File(TOMCAT_HOME+"\\webapps\\Tutorial_1\\PaymentDetails.txt"));
+					ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);	      
+					orderPayments = (HashMap)objectInputStream.readObject();
 				}
 				catch(Exception e)
 				{
-				
+			
 				}
 				int size=0;
+			
 
 				/*get the order size and check if there exist an order with given order number 
 				if there is no order present give a message no order stored with this id */
 
 				if(orderPayments.get(orderId)!=null)
 				{
-				for(OrderPayment od:orderPayments.get(orderId))
-				if (session.getAttribute("usertype").equals("retailer"))
-				{	
-					size= orderPayments.get(orderId).size();
-				}
-				else
-				{		
+				for(OrderPayment od:orderPayments.get(orderId))	
 				if(od.getUserName().equals(username))
 				size= orderPayments.get(orderId).size();
-				}
 				}
 				// display the orders if there exist order with order id
 				if(size>0)
@@ -106,7 +111,7 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response) t
 						pw.print("<td>"+oi.getOrderId()+".</td><td>"+oi.getUserName()+"</td><td>"+oi.getOrderName()+"</td><td>Price: "+oi.getOrderPrice()+"</td>");
 						pw.print("<td><input type='submit' name='Order' value='CancelOrder' class='btnbuy'></td>");
 						pw.print("</tr>");
-						
+					
 					}
 					pw.print("</table>");
 				}
@@ -115,16 +120,17 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response) t
 					pw.print("<h4 style='color:red'>You have not placed any order with this order id</h4>");
 				}
 			}else
+				
 			{
-				pw.print("<h4 style='color:red'>Please enter a valid order id</h4>");
-			}	
+				pw.print("<h4 style='color:red'>Please enter the valid order number</h4>");	
+			}
 		}
 		//if the user presses cancel order from order details shown then process to cancel the order
 		if(request.getParameter("Order")!=null && request.getParameter("Order").equals("CancelOrder"))
 		{
-			String orderName=request.getParameter("orderName");
 			if(request.getParameter("orderName") != null)
 			{
+				String orderName=request.getParameter("orderName");
 				int orderId=0;
 				orderId=Integer.parseInt(request.getParameter("orderId"));
 				ArrayList<OrderPayment> ListOrderPayment =new ArrayList<OrderPayment>();
@@ -132,9 +138,10 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response) t
 				try
 				{
 		
-					orderPayments=MySqlDataStoreUtilities.selectOrder();
-
-				}	
+					FileInputStream fileInputStream = new FileInputStream(new File(TOMCAT_HOME+"\\webapps\\Tutorial_1\\PaymentDetails.txt"));
+					ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);	      
+					orderPayments = (HashMap)objectInputStream.readObject();
+				}
 				catch(Exception e)
 				{
 			
@@ -142,9 +149,8 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response) t
 				//get the exact order with same ordername and add it into cancel list to remove it later
 				for (OrderPayment oi : orderPayments.get(orderId)) 
 					{
-							if(oi.getOrderName().equals(orderName))
+							if(oi.getOrderName().equals(orderName) && oi.getUserName().equals(username))
 							{
-								MySqlDataStoreUtilities.deleteOrder(orderId,orderName);
 								ListOrderPayment.add(oi);
 								pw.print("<h4 style='color:red'>Your Order is Cancelled</h4>");								
 							}
@@ -155,10 +161,24 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response) t
 					{
 							orderPayments.remove(orderId);
 					}
+				//save the updated hashmap with removed order to the file	
+				try
+				{	
+					FileOutputStream fileOutputStream = new FileOutputStream(new File(TOMCAT_HOME+"\\webapps\\Tutorial_1\\PaymentDetails.txt"));
+					ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+					objectOutputStream.writeObject(orderPayments);
+					objectOutputStream.flush();
+					objectOutputStream.close();       
+					fileOutputStream.close();
+				}
+				catch(Exception e)
+				{
+				
+				}	
 			}else
 			{
 				pw.print("<h4 style='color:red'>Please select any product</h4>");
-			}	
+			}
 		}
 		pw.print("</form></div></div></div>");		
 		utility.printHtml("Footer.html");

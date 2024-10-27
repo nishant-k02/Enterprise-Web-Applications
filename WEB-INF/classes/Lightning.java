@@ -23,10 +23,8 @@ public class Lightning extends HttpServlet{
 	private String retailer;
 	private String condition;
 	private double discount;
-	private String productOnSale;
-	private int productQuantity;
 	
-	public Lightning(String name, double price, String image, String retailer,String condition,double discount,String productOnSale,int productQuantity){
+	public Lightning(String name, double price, String image, String retailer,String condition,double discount){
 	//	this.id=id;
 		this.name=name;
 		this.price=price;
@@ -34,8 +32,6 @@ public class Lightning extends HttpServlet{
 		this.condition=condition;
 		this.discount = discount;
 		this.retailer = retailer;
-		this.productOnSale = productOnSale;
-		this.productQuantity = productQuantity;
 	}
 	
 	public Lightning(){
@@ -89,18 +85,5 @@ public class Lightning extends HttpServlet{
 	public void setDiscount(double discount) {
 		this.discount = discount;
 	}
-	public String getproductOnSale() {
-		return productOnSale;
-	}
-
-	public void setproductOnSale(String productOnSale) {
-		this.productOnSale = productOnSale;
-	}
-
-	public int getproductQuantity() {
-		return productQuantity;
-	}
-	public void setproductQuantity(int productQuantity) {
-		this.productQuantity = productQuantity;
-	}
+	
 }

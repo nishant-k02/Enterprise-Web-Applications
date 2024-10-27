@@ -3,7 +3,7 @@
 <head>
 
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-<title>Smart Homes</title>
+<title>Smart Home</title>
 <meta name="keywords" content="" />
 <meta name="description" content="" />
 <link href="style.css" rel="stylesheet" type="text/css" media="screen" />
@@ -29,7 +29,6 @@ $('.carousel .item').each(function(){
 });
 });
 </script>
-<script type="text/javascript" src="javascript.js"></script>
 <style>
 * {
 		box-sizing : unset;
@@ -43,8 +42,9 @@ $('.carousel .item').each(function(){
 
 
 </head>
-<body onload="init()" style='margin: 0px !important; padding: 0 !important; background: black !important;	font-family: Georgia, "Times New Roman", Times, serif;	font-size: 12px !important;	'>
-	
+<body style='margin: 0px !important; padding: 0 !important; background: black !important;	font-family: Georgia, "Times New Roman", Times, serif;	font-size: 12px !important;	'>
+
+	<script type="text/javascript" src="autocomplete.js"></script>
 	<!-- Start #logo top content of the webpage-->
 	<div id="logo" style="background: red; border-top: 5px solid white; border-left: 5px solid white; border-right: 5px solid white;">
 		<table style="float: left">
@@ -58,16 +58,16 @@ $('.carousel .item').each(function(){
 			<tr>
 				<td></td>
 				<td>
-					<em style="color: white">World's Largest Online Smart Devices Center</em>
-				  </td>
-			</tr>
+				  <em style="color: white">World's Largest Online Smart Devices Center</em>
+				</td>
+			  </tr>
 		</table>
 		<div
 			style="float: right; width: 30%; margin-top: 35px; border: 1px solid white; padding: 5px; padding-right: 15px">
 			<em style="color: white;">Search Product:</em>
 			<div name="autofillform">
-				<input type="text" name="searchId" value="" class="input"
-					id="searchId" onkeyup="doCompletion()" 
+				<input type="text" name="complete-field" value="" class="input"
+					id="complete-field" onkeyup="doCompletion()" autocomplete="off"
 					placeholder="search here.." style="padding: 5px; font-size: 16px;" />
 				<div id="auto-row">
 					<table id="complete-table" class="gridtable"
@@ -81,7 +81,7 @@ $('.carousel .item').each(function(){
 	<!-- end #logo -->
 	<!-- start #header -->
 	<!-- menu in header area the header div ends in utility file where header content right side link gets populated with login id cart and logout option -->
-	<div id="header" style="background: red; margin-bottom: 10px; height: 100px; width: 1040px; border-bottom: 5px solid white; border-left: 5px solid white; border-right: 5px solid white;">
+	<div id="header" style="background: red; width: 1040px; border-bottom: 5px solid white; border-left: 5px solid white; border-right: 5px solid white;">
 		<div id="menu">
 			<ul>
 				
@@ -89,9 +89,8 @@ $('.carousel .item').each(function(){
 				<li><a href="ConsoleList"><span class="glyphicon">Doorbells</span></a></li>
 				<li><a href="GamesList"><span class="glyphicon">Doorlocks</span></a></li>
 				<li><a href="TabletList"><span class="glyphicon">Speakers</span></a></li>
-				<li><a href="LightningsList"><span class="glyphicon">Lightning</span></a></li>
-				<li><a href="ThermostatsList"><span class="glyphicon">Thermostat</span></a></li>
-				<li><a href="Trending"><span class="glyphicon">Trending </span></a></li>
+				<li><a href="AccessoryList?maker=microsoft&console=xbox360"><span class="glyphicon">Lightings</span></a></li>
+				<li><a href="Trending"><span class="glyphicon">Thermostats</span></a></li>
 			</ul>
 		</div>	
 		<!-- end #menu -->

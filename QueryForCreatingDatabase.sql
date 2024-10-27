@@ -38,8 +38,6 @@ productImage varchar(40),
 productManufacturer varchar(40),
 productCondition varchar(40),
 productDiscount double,
-productOnSale varchar(20),
-productQuantity integer,
 Primary key(Id)
 );
 

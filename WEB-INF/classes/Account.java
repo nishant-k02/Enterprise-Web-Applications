@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.*;
+import java.io.*;
 import java.sql.*;
 
 @WebServlet("/Account")
@@ -53,64 +54,64 @@ public class Account extends HttpServlet {
 			pw.print("<td> User Type: </td>");
 			pw.print("<td>" +user.getUsertype()+ "</td>");
 			pw.print("</tr>");
-			HashMap<Integer, ArrayList<OrderPayment>> orderPayments = new HashMap<Integer, ArrayList<OrderPayment>>();		
+			HashMap<Integer, ArrayList<OrderPayment>> orderPayments = new HashMap<Integer, ArrayList<OrderPayment>>();
+			String TOMCAT_HOME = System.getProperty("catalina.home");
 			try
-		    {
-				orderPayments=MySqlDataStoreUtilities.selectOrder();
-
-			}
+				{
+					FileInputStream fileInputStream = new FileInputStream(new File(TOMCAT_HOME+"\\webapps\\Tutorial_1\\PaymentDetails.txt"));
+					ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);	      
+					orderPayments = (HashMap)objectInputStream.readObject();
+				}
 			catch(Exception e)
-			{
+				{
 			
-			}
-		    int size=0;
-
-			/*get the order size and check if there exist an order with given order number 
-			if there is no order present give a message no order stored with this id */
-
+				}
+			int size=0;
 			for(Map.Entry<Integer, ArrayList<OrderPayment>> entry : orderPayments.entrySet())
-			{
-			
-				for(OrderPayment od:entry.getValue())	
-				{	
+				{
+					for(OrderPayment od:entry.getValue())	
 					if(od.getUserName().equals(user.getName()))
 					size= size+1;
 				}
-			}
-			// display the orders if there exist order with order id
-			if(size>0)
-			{	
-				pw.print("<form name ='ViewOrder' action='ViewOrder' method='get'>");
 				
-				pw.print("<table  class='gridtable'>");
-				pw.print("<tr><td></td>");
-				pw.print("<td>OrderId:</td>");
-				pw.print("<td>UserName:</td>");
-				pw.print("<td>productOrdered:</td>");
-				pw.print("<td>productPrice:</td></tr>");
-				for(Map.Entry<Integer, ArrayList<OrderPayment>> entry : orderPayments.entrySet())
-				{
-					for(OrderPayment oi:entry.getValue())	
-					if(oi.getUserName().equals(user.getName())) 
+			if(size>0)
+				{	
+					
+					pw.print("<tr><td></td>");
+					pw.print("<td>OrderId:</td>");
+					pw.print("<td>UserName:</td>");
+					pw.print("<td>productOrdered:</td>");
+					pw.print("<td>productPrice:</td></tr>");
+					for(Map.Entry<Integer, ArrayList<OrderPayment>> entry : orderPayments.entrySet())
 					{
-					pw.print("<tr>");			
-					pw.print("<td><input type='radio' name='orderName' value='"+oi.getOrderName()+"'></td>");			
-					pw.print("<td>"+oi.getOrderId()+".</td><td>"+oi.getUserName()+"</td><td>"+oi.getOrderName()+"</td><td>Price: "+oi.getOrderPrice()+"</td>");
-					pw.print("<td><input type='submit' name='Order' value='CancelOrder' class='btnbuy'></td>");
-					pw.print("</tr>");
-					pw.print("<input type='hidden' name='orderId' value='"+oi.getOrderId()+"'>");
+						for(OrderPayment oi:entry.getValue())	
+						if(oi.getUserName().equals(user.getName())) 
+						{
+							pw.print("<form method='get' action='ViewOrder'>");
+							pw.print("<tr>");			
+							pw.print("<td><input type='radio' name='orderName' value='"+oi.getOrderName()+"'></td>");			
+							pw.print("<td>"+oi.getOrderId()+".</td><td>"+oi.getUserName()+"</td><td>"+oi.getOrderName()+"</td><td>Price: "+oi.getOrderPrice()+"</td>");
+							pw.print("<td><input type='hidden' name='orderId' value='"+oi.getOrderId()+"'></td>");
+							pw.print("<td><input type='submit' name='Order' value='CancelOrder' class='btnbuy'></td>");
+							pw.print("</tr>");
+							pw.print("</form>");
+						}
 					
 					}
+					
+					pw.print("</table>");
 				}
-				pw.print("</table>");
-				pw.print("</form>");
-			}
-			else
-			{
-				pw.print("<h4 style='color:red'>You have not placed any order with this order id</h4>");
-			}
+				else
+				{
+					pw.print("<h4 style='color:red'>You have not placed any order with this order id</h4>");
+				}
+			
+				
+				
+				
+				
 			pw.print("</table>");		
-			pw.print("</h2></div></div></div>");
+			pw.print("</h2></div></div></div>");		
 			utility.printHtml("Footer.html");	        	
 		}
 		catch(Exception e)

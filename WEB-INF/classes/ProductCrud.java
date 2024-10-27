@@ -19,9 +19,8 @@ public class ProductCrud extends HttpServlet {
 			String action = request.getParameter("button");
 			
 			String msg = "good";
-			String producttype= "",productId="",productName="",productImage="",productManufacturer="",productCondition="",prod = "",productOnSale = "";
+			String producttype= "",productId="",productName="",productImage="",productManufacturer="",productCondition="",prod = "";
 			double productPrice=0.0,productDiscount = 0.0;
-			int productQuantity = 0;
 			HashMap<String,Console> allconsoles = new HashMap<String,Console> ();
 			HashMap<String,Tablet> alltablets = new HashMap<String,Tablet> ();
 			HashMap<String,Game> allgames = new HashMap<String,Game> ();
@@ -36,8 +35,6 @@ public class ProductCrud extends HttpServlet {
 				 productManufacturer = request.getParameter("productManufacturer");
 				 productCondition = request.getParameter("productCondition");
 				 productDiscount = Double.parseDouble(request.getParameter("productDiscount"));
-				 productOnSale = request.getParameter("productOnSale");
-				 productQuantity = Integer.parseInt(request.getParameter("productQuantity"));
 				 
 			}
 			else{
@@ -93,7 +90,7 @@ public class ProductCrud extends HttpServlet {
 			  {  
 				  try
 				  {
-					  msg = MySqlDataStoreUtilities.addproducts(producttype,productId,productName,productPrice,productImage,productManufacturer,productCondition,productDiscount,productOnSale,productQuantity,prod);
+					  msg = MySqlDataStoreUtilities.addproducts(producttype,productId,productName,productPrice,productImage,productManufacturer,productCondition,productDiscount,prod);
 				  }
 				  catch(Exception e)
 				  { 
@@ -134,7 +131,7 @@ public class ProductCrud extends HttpServlet {
 				
 				  try
 				  {
-					msg = MySqlDataStoreUtilities.updateproducts(producttype,productId,productName,productPrice,productImage,productManufacturer,productCondition,productDiscount,productOnSale,productQuantity);
+					msg = MySqlDataStoreUtilities.updateproducts(producttype,productId,productName,productPrice,productImage,productManufacturer,productCondition,productDiscount);
 				  }
 				  catch(Exception e)
 				  { 

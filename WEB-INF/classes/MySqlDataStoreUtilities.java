@@ -49,8 +49,8 @@ public class MySqlDataStoreUtilities
 			
 			
 			
-			String insertProductQurey = "INSERT INTO  Productdetails(ProductType,Id,productName,productPrice,productImage,productManufacturer,productCondition,productDiscount,productOnSale,productQuantity)" +
-			"VALUES (?,?,?,?,?,?,?,?,?,?);";
+			String insertProductQurey = "INSERT INTO  Productdetails(ProductType,Id,productName,productPrice,productImage,productManufacturer,productCondition,productDiscount)" +
+			"VALUES (?,?,?,?,?,?,?,?);";
 			for(Map.Entry<String,Accessory> entry : SaxParserDataStore.accessories.entrySet())
 			{   
 				String name = "accessories";
@@ -65,9 +65,6 @@ public class MySqlDataStoreUtilities
 				pst.setString(6,acc.getRetailer());
 				pst.setString(7,acc.getCondition());
 				pst.setDouble(8,acc.getDiscount());
-				pst.setString(9,acc.getproductOnSale());
-				//System.out.println("TEST"+acc.getproductOnSale());
-				pst.setInt(10,acc.getproductQuantity());
 				
 				pst.executeUpdate();
 				
@@ -90,8 +87,6 @@ public class MySqlDataStoreUtilities
 				pst.setString(6,con.getRetailer());
 				pst.setString(7,con.getCondition());
 				pst.setDouble(8,con.getDiscount());
-				pst.setString(9,con.getproductOnSale());
-				pst.setInt(10,con.getproductQuantity());
 				
 				pst.executeUpdate();
 				try{
@@ -126,8 +121,6 @@ public class MySqlDataStoreUtilities
 				pst.setString(6,game.getRetailer());
 				pst.setString(7,game.getCondition());
 				pst.setDouble(8,game.getDiscount());
-				pst.setString(9,game.getproductOnSale());
-				pst.setInt(10,game.getproductQuantity());
 				
 				pst.executeUpdate();
 				
@@ -147,8 +140,6 @@ public class MySqlDataStoreUtilities
 				pst.setString(6,tablet.getRetailer());
 				pst.setString(7,tablet.getCondition());
 				pst.setDouble(8,tablet.getDiscount());
-				pst.setString(9,tablet.getproductOnSale());
-				pst.setInt(10,tablet.getproductQuantity());
 				
 				pst.executeUpdate();
 				
@@ -168,8 +159,6 @@ public class MySqlDataStoreUtilities
 				pst.setString(6,light.getRetailer());
 				pst.setString(7,light.getCondition());
 				pst.setDouble(8,light.getDiscount());
-				pst.setString(9,light.getproductOnSale());
-				pst.setInt(10,light.getproductQuantity());
 				
 				pst.executeUpdate();
 				
@@ -189,8 +178,6 @@ public class MySqlDataStoreUtilities
 				pst.setString(6,thermo.getRetailer());
 				pst.setString(7,thermo.getCondition());
 				pst.setDouble(8,thermo.getDiscount());
-				pst.setString(9,thermo.getproductOnSale());
-				pst.setInt(10,thermo.getproductQuantity());
 				
 				pst.executeUpdate();
 				
@@ -216,7 +203,7 @@ public class MySqlDataStoreUtilities
 			ResultSet rs = pst.executeQuery();
 			
 			while(rs.next())
-				{	Console con = new Console(rs.getString("productName"),rs.getDouble("productPrice"),rs.getString("productImage"),rs.getString("productManufacturer"),rs.getString("productCondition"),rs.getDouble("productDiscount"),rs.getString("productOnSale"),rs.getInt("productQuantity"));
+				{	Console con = new Console(rs.getString("productName"),rs.getDouble("productPrice"),rs.getString("productImage"),rs.getString("productManufacturer"),rs.getString("productCondition"),rs.getDouble("productDiscount"));
 			hm.put(rs.getString("Id"), con);
 			con.setId(rs.getString("Id"));
 			
@@ -262,7 +249,7 @@ public static HashMap<String,Tablet> getTablets()
 		ResultSet rs = pst.executeQuery();
 		
 		while(rs.next())
-			{	Tablet tab = new Tablet(rs.getString("productName"),rs.getDouble("productPrice"),rs.getString("productImage"),rs.getString("productManufacturer"),rs.getString("productCondition"),rs.getDouble("productDiscount"),rs.getString("productOnSale"),rs.getInt("productQuantity"));
+			{	Tablet tab = new Tablet(rs.getString("productName"),rs.getDouble("productPrice"),rs.getString("productImage"),rs.getString("productManufacturer"),rs.getString("productCondition"),rs.getDouble("productDiscount"));
 		hm.put(rs.getString("Id"), tab);
 		tab.setId(rs.getString("Id"));
 
@@ -287,7 +274,7 @@ public static HashMap<String,Game> getGames()
 		ResultSet rs = pst.executeQuery();
 		
 		while(rs.next())
-			{	Game game = new Game(rs.getString("productName"),rs.getDouble("productPrice"),rs.getString("productImage"),rs.getString("productManufacturer"),rs.getString("productCondition"),rs.getDouble("productDiscount"),rs.getString("productOnSale"),rs.getInt("productQuantity"));
+			{	Game game = new Game(rs.getString("productName"),rs.getDouble("productPrice"),rs.getString("productImage"),rs.getString("productManufacturer"),rs.getString("productCondition"),rs.getDouble("productDiscount"));
 		hm.put(rs.getString("Id"), game);
 		game.setId(rs.getString("Id"));
 	}
@@ -311,7 +298,7 @@ public static HashMap<String,Lightning> getLightnings()
 		ResultSet rs = pst.executeQuery();
 		
 		while(rs.next())
-			{	Lightning light = new Lightning(rs.getString("productName"),rs.getDouble("productPrice"),rs.getString("productImage"),rs.getString("productManufacturer"),rs.getString("productCondition"),rs.getDouble("productDiscount"),rs.getString("productOnSale"),rs.getInt("productQuantity"));
+			{	Lightning light = new Lightning(rs.getString("productName"),rs.getDouble("productPrice"),rs.getString("productImage"),rs.getString("productManufacturer"),rs.getString("productCondition"),rs.getDouble("productDiscount"));
 		hm.put(rs.getString("Id"), light);
 		light.setId(rs.getString("Id"));
 	}
@@ -335,7 +322,7 @@ public static HashMap<String,Thermostat> getThermostats()
 		ResultSet rs = pst.executeQuery();
 		
 		while(rs.next())
-			{	Thermostat thermo = new Thermostat(rs.getString("productName"),rs.getDouble("productPrice"),rs.getString("productImage"),rs.getString("productManufacturer"),rs.getString("productCondition"),rs.getDouble("productDiscount"),rs.getString("productOnSale"),rs.getInt("productQuantity"));
+			{	Thermostat thermo = new Thermostat(rs.getString("productName"),rs.getDouble("productPrice"),rs.getString("productImage"),rs.getString("productManufacturer"),rs.getString("productCondition"),rs.getDouble("productDiscount"));
 		hm.put(rs.getString("Id"), thermo);
 		thermo.setId(rs.getString("Id"));
 	}
@@ -359,7 +346,7 @@ public static HashMap<String,Accessory> getAccessories()
 		ResultSet rs = pst.executeQuery();
 		
 		while(rs.next())
-			{	Accessory acc = new Accessory(rs.getString("productName"),rs.getDouble("productPrice"),rs.getString("productImage"),rs.getString("productManufacturer"),rs.getString("productCondition"),rs.getDouble("productDiscount"),rs.getString("productOnSale"),rs.getInt("productQuantity"));
+			{	Accessory acc = new Accessory(rs.getString("productName"),rs.getDouble("productPrice"),rs.getString("productImage"),rs.getString("productManufacturer"),rs.getString("productCondition"),rs.getDouble("productDiscount"));
 		hm.put(rs.getString("Id"), acc);
 		acc.setId(rs.getString("Id"));
 
@@ -432,14 +419,14 @@ public static void Insertstores(){
 		}
 	}
 
-public static String addproducts(String producttype,String productId,String productName,double productPrice,String productImage,String productManufacturer,String productCondition,double productDiscount,String productOnSale,int productQuantity,String prod)
+public static String addproducts(String producttype,String productId,String productName,double productPrice,String productImage,String productManufacturer,String productCondition,double productDiscount,String prod)
 {
 	String msg = "Product is added successfully";
 	try{
 		
 		getConnection();
-		String addProductQurey = "INSERT INTO  Productdetails(ProductType,Id,productName,productPrice,productImage,productManufacturer,productCondition,productDiscount,productOnSale,productQuantity)" +
-		"VALUES (?,?,?,?,?,?,?,?,?,?);";
+		String addProductQurey = "INSERT INTO  Productdetails(ProductType,Id,productName,productPrice,productImage,productManufacturer,productCondition,productDiscount)" +
+		"VALUES (?,?,?,?,?,?,?,?);";
 		
 		String name = producttype;
 		
@@ -452,8 +439,6 @@ public static String addproducts(String producttype,String productId,String prod
 		pst.setString(6,productManufacturer);
 		pst.setString(7,productCondition);
 		pst.setDouble(8,productDiscount);
-		pst.setString(9,productOnSale);
-		pst.setInt(10,productQuantity);
 		
 		pst.executeUpdate();
 		try{
@@ -485,13 +470,13 @@ public static String addproducts(String producttype,String productId,String prod
 	}
 	return msg;
 }
-public static String updateproducts(String producttype,String productId,String productName,double productPrice,String productImage,String productManufacturer,String productCondition,double productDiscount,String productOnSale, int productQuantity)
+public static String updateproducts(String producttype,String productId,String productName,double productPrice,String productImage,String productManufacturer,String productCondition,double productDiscount)
 { 
 	String msg = "Product is updated successfully";
 	try{
 		
 		getConnection();
-		String updateProductQurey = "UPDATE Productdetails SET productName=?,productPrice=?,productImage=?,productManufacturer=?,productCondition=?,productDiscount=?,productOnSale=?,productQuantity=? where Id =?;" ;
+		String updateProductQurey = "UPDATE Productdetails SET productName=?,productPrice=?,productImage=?,productManufacturer=?,productCondition=?,productDiscount=? where Id =?;" ;
 		
 		
 		
@@ -503,9 +488,7 @@ public static String updateproducts(String producttype,String productId,String p
 		pst.setString(4,productManufacturer);
 		pst.setString(5,productCondition);
 		pst.setDouble(6,productDiscount);
-		pst.setString(7,productOnSale);
-		pst.setInt(8,productQuantity);
-		pst.setString(9,productId);
+		pst.setString(7,productId);
 		pst.executeUpdate();
 		
 		
@@ -519,124 +502,6 @@ public static String updateproducts(String producttype,String productId,String p
 	}
 	return msg;	
 }
-
-public static HashMap<String,Inventory> getDailyTransactions()
-{
-	HashMap<String,Inventory> hm=new HashMap<String,Inventory>();
-	try {
-		
-		
-		getConnection();
-		Statement stmt=conn.createStatement();
-		String selectDailyTransactionsQurey="select purchaseDate,sum(orderPrice) as totalSales from CustomerOrders group by purchaseDate";
-		ResultSet rs = stmt.executeQuery(selectDailyTransactionsQurey);
-		
-		while(rs.next())
-		{	
-			Inventory inventoryItems = new Inventory(rs.getString("purchaseDate"),rs.getDouble("totalSales"));
-			
-				hm.put(rs.getString("purchaseDate"), inventoryItems);
-		}
-	}
-	catch(Exception e)
-	{
-	}
-	return hm;
-}
-public static HashMap<String,Inventory> getSoldProducts()
-{
-	HashMap<String,Inventory> hm=new HashMap<String,Inventory>();
-	try {
-		
-		
-		getConnection();
-		Statement stmt=conn.createStatement();
-		String selectSoldProductsQurey="select orderName,MAX(orderPrice) as orderPrice,COUNT(orderName) as itemsSold,MAX(orderPrice) * COUNT(orderName) as totalSales FROM CustomerOrders GROUP BY orderName;";
-		ResultSet rs = stmt.executeQuery(selectSoldProductsQurey);
-		
-		while(rs.next())
-		{	
-			Inventory inventoryItems = new Inventory(rs.getString("orderName"),rs.getDouble("orderPrice"),rs.getInt("itemsSold"),rs.getDouble("totalSales"));
-			
-				hm.put(rs.getString("orderName"), inventoryItems);
-		}
-	}
-	catch(Exception e)
-	{
-	}
-	return hm;
-}
-
-public static HashMap<String,Inventory> getAllProducts()
-{
-	HashMap<String,Inventory> hm=new HashMap<String,Inventory>();
-	try {
-		
-		
-		getConnection();
-		Statement stmt=conn.createStatement();
-		String selectProductQurey="Select * from Productdetails";
-		ResultSet rs = stmt.executeQuery(selectProductQurey);
-		while(rs.next())
-		{	
-			Inventory inventoryItems = new Inventory(rs.getString("ProductType"),rs.getString("Id"),rs.getString("productName"),rs.getDouble("productPrice"),rs.getString("productImage"),rs.getString("productManufacturer"),rs.getString("productCondition"),rs.getDouble("productDiscount"),rs.getString("productOnSale"),rs.getInt("productQuantity"));
-			
-				hm.put(rs.getString("ProductType"), inventoryItems);
-		}
-	}
-	catch(Exception e)
-	{
-	}
-	return hm;
-}
-public static HashMap<String,Inventory> getOnRebateProducts()
-{
-	HashMap<String,Inventory> hm=new HashMap<String,Inventory>();
-	try {
-		
-		
-		getConnection();
-		Statement stmt=conn.createStatement();
-		String selectProductQurey="select * from Productdetails where productDiscount <>0";
-		ResultSet rs = stmt.executeQuery(selectProductQurey);
-	
-		while(rs.next())
-		{	
-			Inventory inventoryItems = new Inventory(rs.getString("ProductType"),rs.getString("Id"),rs.getString("productName"),rs.getDouble("productPrice"),rs.getString("productImage"),rs.getString("productManufacturer"),rs.getString("productCondition"),rs.getDouble("productDiscount"),rs.getString("productOnSale"),rs.getInt("productQuantity"));
-			
-				hm.put(rs.getString("ProductType"), inventoryItems);
-		}
-	}
-	catch(Exception e)
-	{
-	}
-	return hm;
-}
-public static HashMap<String,Inventory> getOnSaleProducts()
-{
-	HashMap<String,Inventory> hm=new HashMap<String,Inventory>();
-	try {
-		
-		
-		getConnection();
-		Statement stmt=conn.createStatement();
-		String selectProductQurey="select * from Productdetails where productOnSale='YES';";
-		ResultSet rs = stmt.executeQuery(selectProductQurey);
-	
-		while(rs.next())
-		{	
-			Inventory inventoryItems = new Inventory(rs.getString("ProductType"),rs.getString("Id"),rs.getString("productName"),rs.getDouble("productPrice"),rs.getString("productImage"),rs.getString("productManufacturer"),rs.getString("productCondition"),rs.getDouble("productDiscount"),rs.getString("productOnSale"),rs.getInt("productQuantity"));
-			
-				hm.put(rs.getString("ProductType"), inventoryItems);
-		}
-	}
-	catch(Exception e)
-	{
-	}
-	return hm;
-}
-
-
 public static String deleteproducts(String productId)
 {   String msg = "Product is deleted successfully";
 try

@@ -21,17 +21,6 @@ public class GamesList extends HttpServlet {
 		PrintWriter pw = response.getWriter();
 
 		/* Checks the Games type whether it is electronicArts or activision or takeTwoInteractive */
-		HashMap<String,Game> allgames = new HashMap<String,Game> ();
-
-
-		/* Checks the Tablets type whether it is microsft or sony or nintendo */
-		try{
-		    allgames = MySqlDataStoreUtilities.getGames();
-		}
-		catch(Exception e)
-		{
-			
-		}
 				
 		String name = null;
 		String CategoryName = request.getParameter("maker");
@@ -39,43 +28,43 @@ public class GamesList extends HttpServlet {
 		
 		if(CategoryName==null)
 		{
-			hm.putAll(allgames);
+			hm.putAll(SaxParserDataStore.games);
 			name = "";
 		}
 		else
 		{
-		  if(CategoryName.equals("elemake"))
+		  if(CategoryName.equals("electronicArts"))
 		  {
-			for(Map.Entry<String,Game> entry : allgames.entrySet())
+			for(Map.Entry<String,Game> entry : SaxParserDataStore.games.entrySet())
 				{
-				if(entry.getValue().getRetailer().equals("Elemake"))
+				if(entry.getValue().getRetailer().equals("ElectronicArts"))
 				 {
 					 hm.put(entry.getValue().getId(),entry.getValue());
 				 }
 				}
-			name = "Elemake";
+			name = "Honeywell";
 		  }
-		  else if(CategoryName.equals("kwikset"))
+		  else if(CategoryName.equals("activision"))
 		  {
-			for(Map.Entry<String,Game> entry : allgames.entrySet())
+			for(Map.Entry<String,Game> entry : SaxParserDataStore.games.entrySet())
 				{
-				if(entry.getValue().getRetailer().equals("Kwikset"))
+				if(entry.getValue().getRetailer().equals("Activision"))
 				 {
 					 hm.put(entry.getValue().getId(),entry.getValue());
 				 }
 				}	
-			name = "Kwikset";
+			name = "Yale";
 		  }
-		  else if(CategoryName.equals("wyze"))
+		  else if(CategoryName.equals("takeTwoInteractive"))
 		  {
-			for(Map.Entry<String,Game> entry : allgames.entrySet())
+			for(Map.Entry<String,Game> entry : SaxParserDataStore.games.entrySet())
 				{
-				if(entry.getValue().getRetailer().equals("Wyze"))
+				if(entry.getValue().getRetailer().equals("TakeTwoInteractive"))
 				 {
 					 hm.put(entry.getValue().getId(),entry.getValue());
 				 }
 				}
-			name = "Wyze";
+			name = "Eufy";
 		  }
 		}
 
@@ -89,7 +78,7 @@ public class GamesList extends HttpServlet {
 		utility.printHtml("Header.html");
 		utility.printHtml("LeftNavigationBar.html");
 		pw.print("<div id='content'><div class='post'><h2 class='title meta'>");
-		pw.print("<a style='font-size: 24px;'>"+name+" Doorlocks</a>");
+		pw.print("<a style='font-size: 24px;'>"+name+" Smart Doorlocks</a>");
 		pw.print("</h2><div class='entry'><table id='bestseller'>");
 		int i = 1; int size= hm.size();
 		for(Map.Entry<String, Game> entry : hm.entrySet()){
@@ -98,8 +87,6 @@ public class GamesList extends HttpServlet {
 			pw.print("<td><div id='shop_item'>");
 			pw.print("<h3>"+game.getName()+"</h3>");
 			pw.print("<strong>"+ "$" + game.getPrice() + "</strong><ul>");
-			pw.print("<h6> Retailer Discount: <b>"+game.getDiscount()+"</b></h6><ul>");
-			pw.print("<h6>This product has 2 years warranty</h6>");
 			pw.print("<li id='item'><img src='images/games/"+game.getImage()+"' alt='' /></li>");
 			pw.print("<li><form method='post' action='Cart'>" +
 					"<input type='hidden' name='name' value='"+entry.getKey()+"'>"+
@@ -110,9 +97,7 @@ public class GamesList extends HttpServlet {
 			pw.print("<li><form method='post' action='WriteReview'>"+"<input type='hidden' name='name' value='"+entry.getKey()+"'>"+
 					"<input type='hidden' name='type' value='games'>"+
 					"<input type='hidden' name='maker' value='"+CategoryName+"'>"+
-					"<input type='hidden' name='price' value='"+game.getPrice()+"'>"+
 					"<input type='hidden' name='access' value=''>"+
-					"<input type='hidden' name='discount' value='"+game.getDiscount()+"'>"+
 				    "<input type='submit' value='WriteReview' class='btnreview'></form></li>");
 			pw.print("<li><form method='post' action='ViewReview'>"+"<input type='hidden' name='name' value='"+entry.getKey()+"'>"+
 					"<input type='hidden' name='type' value='games'>"+
